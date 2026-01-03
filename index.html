@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sentiment Analysis Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-2xl bg-white rounded-xl shadow-md p-6">
+    
+    <h1 class="text-2xl font-bold text-gray-800 mb-2">
+      Sentiment Analysis Demo
+    </h1>
+    <p class="text-gray-600 mb-6">
+      Analyze Indonesian text sentiment using a Transformer-based model (IndoBERT).
+    </p>
+
+    <!-- Text Input -->
+    <textarea
+      id="inputText"
+      rows="4"
+      placeholder="Type an Indonesian review here..."
+      class="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:border-blue-300 mb-4"
+    ></textarea>
+
+    <!-- Button -->
+    <button
+      id="analyzeBtn"
+      class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+    >
+      Analyze Sentiment
+    </button>
+
+    <!-- Loading -->
+    <p id="loading" class="text-center text-gray-500 mt-4 hidden">
+      Analyzing...
+    </p>
+
+    <!-- Result -->
+    <div id="result" class="mt-6 hidden">
+      <div class="border rounded-lg p-4">
+        <p class="text-lg font-semibold">
+          Sentiment:
+          <span id="label" class="ml-2"></span>
+        </p>
+        <p class="text-gray-600 mt-1">
+          Confidence:
+          <span id="confidence"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <p id="error" class="text-red-600 mt-4 hidden"></p>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    const inputText = document.getElementById("inputText");
+    const loading = document.getElementById("loading");
+    const result = document.getElementById("result");
+    const labelEl = document.getElementById("label");
+    const confidenceEl = document.getElementById("confidence");
+    const errorEl = document.getElementById("error");
+
+    analyzeBtn.addEventListener("click", async () => {
+      const text = inputText.value.trim();
+
+      // Reset state
+      result.classList.add("hidden");
+      errorEl.classList.add("hidden");
+
+      if (!text) {
+        errorEl.textContent = "Input text cannot be empty.";
+        errorEl.classList.remove("hidden");
+        return;
+      }
+
+      loading.classList.remove("hidden");
+      analyzeBtn.disabled = true;
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to get prediction from API");
+        }
+
+        const data = await response.json();
+
+        labelEl.textContent = data.label;
+        confidenceEl.textContent = data.confidence;
+
+        // Styling based on sentiment
+        if (data.label === "positive") {
+          labelEl.className = "text-green-600 font-bold";
+        } else {
+          labelEl.className = "text-red-600 font-bold";
+        }
+
+        result.classList.remove("hidden");
+      } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.classList.remove("hidden");
+      } finally {
+        loading.classList.add("hidden");
+        analyzeBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

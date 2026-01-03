@@ -1,0 +1,39 @@
+sentiment-analysis-discord/
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
+├── models/
+│   ├── indobert_sentiment/
+│   │   ├── config.json
+│   │   ├── pytorch_model.bin
+│   │   ├── tokenizer.json
+│   │   ├── tokenizer_config.json
+│   │   └── vocab.txt
+│   └── metadata.json
+│
+├── src/
+│   ├── __init__.py
+│   │
+│   ├── config/
+│   │   └── settings.py
+│   │
+│   ├── preprocessing/
+│   │   └── text_cleaner.py
+│   │
+│   ├── inference/
+│   │   ├── model_loader.py
+│   │   └── predictor.py
+│   │
+│   ├── api/
+│   │   └── main.py
+│   │
+│   └── utils/
+│       └── logger.py
+│
+├── tests/
+│   └── test_inference.py
+│
+└── notebooks/
+    └── (optional) experiments.ipynb

@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+
+# Logs
+logs/
+
+# Model artifacts (large files)
+models/**/*.bin
+models/**/*.safetensors
+
+# OS
+.DS_Store
