@@ -6,7 +6,7 @@ This project implements an end-to-end **sentiment analysis system** for Indonesi
 The project emphasizes **engineering-driven decision making**, including baseline comparison, error analysis, and deployment trade-offs, rather than solely focusing on model accuracy improvements.
 
 
-![UI](img\index.png)
+![UI](img/index.png)
 ---
 
 ## Dataset Description
@@ -74,7 +74,7 @@ Average review length shows a consistent pattern:
 Lower ratings tend to include longer, more detailed complaints, while high ratings are typically short and expressive.
 
 
-![WordCloud](img\wordcloud.png)
+![WordCloud](img/wordcloud.png)
 ---
 
 ## Modeling Approach
